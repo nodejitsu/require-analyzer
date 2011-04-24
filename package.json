@@ -1,0 +1,13 @@
+{
+  "name": "requireish",
+  "description": "Determine the set of requirements for a given node.js file, directory tree, or module",
+  "version": "0.1.0",
+  "author": "Charlie Robbins <charlie.robbins@gmail.com>",
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/nodejitsu/requireish.git" 
+  },
+  "main": "./lib/requireish",
+  "bin": { "requireish": "./bin/requireish" },
+  "engines": { "node": ">= 0.4.0" }
+}

@@ -1,0 +1,9 @@
+#!/usr/bin/env node
+
+require.paths.unshift(require('path').join(__dirname, '..', 'lib'));
+
+var requireish = require('requireish');
+
+requireish.package(process.cwd(), function (err, packages) {
+  require('eyes').inspect(packages);
+});
