@@ -2,8 +2,8 @@
 
 require.paths.unshift(require('path').join(__dirname, '..', 'lib'));
 
-var requireish = require('requireish');
+var analyzer = require('require-analyzer');
 
-requireish.package(process.cwd(), function (err, packages) {
+analyzer.package(process.cwd(), function (err, packages) {
   require('eyes').inspect(packages);
 });

@@ -4,7 +4,7 @@ var fs = require('fs'),
     path = require('path'),
     vows = require('vows'),
     assert = require('assert'),
-    requireish = require('requireish');
+    analyzer = require('require-analyzer');
 
 var packages = [
   'async',
@@ -17,12 +17,12 @@ var packages = [
   'chainsaw'
 ];
 
-vows.describe('requireish').addBatch({
-  "When using requireish": {
+vows.describe('require-analyzer').addBatch({
+  "When using require-analyzer": {
     "the dir() method": {
       topic: function () {
         var that = this;
-        requireish.dir(path.join(__dirname, '..', 'lib'), this.callback);
+        analyzer.dir(path.join(__dirname, '..', 'lib'), this.callback);
       },
       "should respond with the correct dependencies": function (err, pkgs) {
         assert.isNull(err);
@@ -31,10 +31,10 @@ vows.describe('requireish').addBatch({
     }
   }
 }).addBatch({
-  "When using requireish": {
+  "When using require-analyzer": {
     "the package() method": {
       topic: function () {
-        requireish.package(path.join(__dirname, '..'), this.callback)
+        analyzer.package(path.join(__dirname, '..'), this.callback)
       },
       "should respond with the correct dependencies": function (err, pkgs) {
         assert.isNull(err);
@@ -43,10 +43,10 @@ vows.describe('requireish').addBatch({
     }
   }
 }).addBatch({
-  "When using requireish": {
+  "When using require-analyzer": {
     "the file() method": {
       topic: function () {
-        requireish.file(path.join(__dirname, '..', 'lib', 'requireish'), this.callback)
+        analyzer.file(path.join(__dirname, '..', 'lib', 'require-analyzer'), this.callback)
       },
       "should respond with the correct dependencies": function (err, pkgs) {
         assert.isNull(err);

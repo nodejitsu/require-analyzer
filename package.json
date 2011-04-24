@@ -1,13 +1,13 @@
 {
-  "name": "requireish",
+  "name": "require-analyzer",
   "description": "Determine the set of requirements for a given node.js file, directory tree, or module",
   "version": "0.1.0",
   "author": "Charlie Robbins <charlie.robbins@gmail.com>",
   "repository": {
     "type": "git",
-    "url": "http://github.com/nodejitsu/requireish.git" 
+    "url": "http://github.com/nodejitsu/require-analyzer.git" 
   },
-  "main": "./lib/requireish",
-  "bin": { "requireish": "./bin/requireish" },
+  "main": "./lib/require-analyzer",
+  "bin": { "require-analyzer": "./bin/require-analyzer" },
   "engines": { "node": ">= 0.4.0" }
 }
