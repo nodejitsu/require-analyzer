@@ -1,0 +1,23 @@
+#!/usr/bin/env node
+
+var Module = require('module').Module,
+    __load = Module._load,
+    packages = {};
+
+//
+// Monkey punch `Module._load()` to observe the names
+// of packages as they are loaded. 
+//
+Module._load = function (name) {
+  console.log(name);
+  return __load.apply(Module, arguments);
+}
+
+try {    
+  require(process.argv[2]);
+}
+catch (ex) {
+  //
+  // Ignore errors and attempt to log as many packages as we can.
+  //
+}
