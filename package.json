@@ -7,6 +7,10 @@
     "type": "git",
     "url": "http://github.com/nodejitsu/require-analyzer.git" 
   },
+  "dependencies": {
+    "findit": ">= 0.0.3",
+    "npm": ">= 0.3.14"
+  },
   "main": "./lib/require-analyzer",
   "bin": { "require-analyzer": "./bin/require-analyzer" },
   "engines": { "node": ">= 0.4.0" }

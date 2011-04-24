@@ -7,7 +7,6 @@ var fs = require('fs'),
     analyzer = require('require-analyzer');
 
 var packages = [
-  'async',
   'npm',
   'semver',
   'findit',
