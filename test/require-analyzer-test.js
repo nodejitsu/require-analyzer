@@ -1,3 +1,10 @@
+/*
+ * require-analyzer-test.js: Basic tests for the require-analyzer module.
+ *
+ * (C) 2010, Nodejitsu Inc.
+ *
+ */
+ 
 require.paths.unshift(require('path').join(__dirname, '..', 'lib'));
 
 var fs = require('fs'),
