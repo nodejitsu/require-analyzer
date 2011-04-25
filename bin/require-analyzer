@@ -149,6 +149,11 @@ fs.readFile(pkgFile, function (err, data) {
     return;
   }
   
+  //
+  // ### function mergeResults (results)
+  // #### @results {Object} Set of results returned from `npm`
+  // Formats the results according to the `version` of each package.
+  //
   function mergeResults (results) {
     var all = {};
 
@@ -192,6 +197,10 @@ fs.readFile(pkgFile, function (err, data) {
       success: 'Additional dependencies found'
     });
     
+    //
+    // If require-analyzer found new dependencies then update the `package.json`
+    // file in the target `dir`.
+    //
     if (Object.keys(newpkg.dependencies).length > 0) {      
       winston.info('Updating ' + pkgFile.magenta);
       pkg.dependencies = analyzer.merge({}, pkg.dependencies, newpkg.dependencies);
@@ -202,7 +211,7 @@ fs.readFile(pkgFile, function (err, data) {
           return;
         }
         
-        winston.info('require-analyzer package.json dependencies');
+        winston.info('require-analyzer updated package.json dependencies');
       })
     }
   });
