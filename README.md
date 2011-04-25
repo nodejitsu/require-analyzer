@@ -18,6 +18,8 @@ NOTE: If you're using `npm >= 1.0` then you need to add the `-g` parameter to in
 ## Usage
 There are two distinct ways to use the `require-analyzer` library: from the command line or through code. The command line tool is designed to work with `package.json` files so make sure that you have created one for your project first. Checkout [jitsu][0] for a quick and easy way to create a package.json.
 
+For more information read our blog post at [blog.nodejitsu.com][1].
+
 ### Command-line usage
 Using require-analyzer from the command line is easy. The binary will attempt to read the `package.json` file in the current directory, then analyze the dependencies and cross reference the result. 
 <pre>
@@ -117,7 +119,7 @@ Sometimes when dealing with dependencies it is necessary to further analyze the 
     'bar': '>= 0.1.0'
   };
   
-  var updates = analyzer.update(current, updated);
+  var updates = analyzer.updates(current, updated);
   
   //
   // This will return an object literal with the differential
@@ -135,7 +137,8 @@ Sometimes when dealing with dependencies it is necessary to further analyze the 
   vows --spec
 </pre>
 
-#### Author: [Charlie Robbins][1]
+#### Author: [Charlie Robbins][2]
 
 [0]: http://github.com/nodejitsu/jitsu
-[1]: http://nodejitsu.com
+[1]: http://blog.nodejitsu.com/analyze-nodejs-dependencies-like-magic
+[2]: http://nodejitsu.com
