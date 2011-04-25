@@ -125,12 +125,8 @@ fs.readFile(pkgFile, function (err, data) {
   }
   
   var pkg, updated, options = {
-    target: process.cwd(),
-    reduce: true,
-    npm: {
-      log: path.join(__dirname, '..', 'npm.log'),
-      out: path.join(__dirname, '..', 'npm.out')
-    }
+    target: dir,
+    reduce: true
   };
   
   //
