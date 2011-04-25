@@ -57,9 +57,9 @@ The easiest way to use `require-analyzer` programmatically is through the `.anal
 3. If it is a file, then analyze `require` statements from that individual file.
 
 Lets dive into a quick sample usage:
-''' javascript
+``` javascript
   var analyzer = require('require-analyzer');
-'''
+```
 
 ## Tests
 <pre>
