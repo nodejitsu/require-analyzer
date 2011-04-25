@@ -8,7 +8,23 @@ var fs = require('fs'),
     colors = require('colors'),
     eyes = require('eyes'),
     winston = require('winston'),
+    argv = require('optimist').argv,
     analyzer = require('require-analyzer');
+
+var help = [
+  'usage: require-analyzer [options] [directory]',
+  '',
+  'Analyzes the node.js requirements for the target directory. If no directory',
+  'is supplied then the current directory is used',
+  '',
+  'options:',
+  '  --update     Update versions for existing dependencies',
+  '  -h, --help   You\'re staring at it'
+].join('\n');
+
+if (argv.h || argv.help) {
+  return util.puts(help);
+}
 
 //
 // Create an `eyes` inspector for pretty printing dependencies.
@@ -24,8 +40,7 @@ var inspect = eyes.inspector({ stream: null,
     bool:    'magenta',   // true false
     regexp:  'green',     // /\d+/
     string:  'yellow'
-  },
-  pretty: 4
+  }
 });
 
 //
@@ -72,7 +87,7 @@ if (!winston.levels.prompt) {
 // Lists the dependencies in `pkg` using `eyes` for 
 // pretty printing the output consistently.
 //
-function listDependencies (pkg, msg) {
+function listDependencies (pkg, msgs) {
   pkg = pkg || {};
   pkg.dependencies = pkg.dependencies || {};
   
@@ -80,7 +95,7 @@ function listDependencies (pkg, msg) {
       list = inspect(pkg.dependencies);
   
   if (keys.length === 0) {
-    return winston.warn('No dependencies found'.yellow)
+    return winston.warn(msgs.error);
   }
   else if (keys.length <= 2) {
     list = list.replace(/\{\s/, '{ \n')
@@ -92,23 +107,41 @@ function listDependencies (pkg, msg) {
     list = list.replace(/\n\s{4}/ig, '\n  ');
   }
   
-  winston.info(msg)
+  winston.info(msgs.success)
   list.split('\n').forEach(function (line) {
     winston.data(line);
   })
 }
 
-winston.info('require-analyzer starting in ' + process.cwd().magenta);
-fs.readFile(path.join(process.cwd(), 'package.json'), function (err, data) {
+var dir = argv._[0] || process.cwd(),
+    pkgFile = path.join(dir, 'package.json');
+
+winston.info('require-analyzer starting in ' + dir.magenta);
+fs.readFile(pkgFile, function (err, data) {
   if (err) {
     winston.error('Error reading package.json');
     winston.error(err.message.red);
     return;
   }
   
+  var pkg, updated, options = {
+    target: process.cwd(),
+    reduce: true,
+    npm: {
+      log: path.join(__dirname, '..', 'npm.log'),
+      out: path.join(__dirname, '..', 'npm.out')
+    }
+  };
+  
+  //
+  // Attempt to parse the package.json from the current directory.
+  //
   try {
-    var pkg = JSON.parse(data.toString());
-    listDependencies(pkg, 'Found existing dependencies');
+    pkg = JSON.parse(data.toString());
+    listDependencies(pkg, {
+      error: 'No dependencies found', 
+      success: 'Found existing dependencies'
+    });
   }
   catch (ex) {
     winston.error('Error parsing package.json');
@@ -116,8 +149,61 @@ fs.readFile(path.join(process.cwd(), 'package.json'), function (err, data) {
     return;
   }
   
+  function mergeResults (results) {
+    var all = {};
+
+    Object.keys(results).forEach(function (pkg) {
+      all[pkg] = '>= ' + results[pkg].version;
+    });
+
+    return analyzer.updates(pkg.dependencies, all);
+  }
+  
   winston.info('Analyzing dependencies...');
-  analyzer.package(process.cwd(), function (err, packages) {
-    require('eyes').inspect(packages);
+  var emitter = analyzer.analyze(options, function (err, packages) {
+    if (err) {
+      winston.error('Error analyzing dependencies');
+      winston.error(err.message.red);
+      return;
+    }
+  });
+  
+  emitter.on('dependencies', function (deps) {
+    winston.info('Done analyzing raw dependencies');
+  });
+  
+  emitter.on('search', function (results) {
+    winston.info('Retrieved packages from npm');
+    updated = mergeResults(results).updated;
+  });
+  
+  emitter.on('reduce', function (reduced) {
+    var added = mergeResults(reduced).added,
+        newpkg = {
+          dependencies: analyzer.merge({}, added)
+        };
+    
+    if (argv.update) {
+      newpkg.dependencies = analyzer.merge({}, newpkg.dependencies, updated);
+    } 
+    
+    listDependencies(newpkg, {
+      error: 'No additional dependencies found',
+      success: 'Additional dependencies found'
+    });
+    
+    if (Object.keys(newpkg.dependencies).length > 0) {      
+      winston.info('Updating ' + pkgFile.magenta);
+      pkg.dependencies = analyzer.merge({}, pkg.dependencies, newpkg.dependencies);
+      fs.writeFile(pkgFile, JSON.stringify(pkg, null, 2), function (err) {
+        if (err) {
+          winston.error('Error writing package.json');
+          winston.error(err.message.red);
+          return;
+        }
+        
+        winston.info('require-analyzer package.json dependencies');
+      })
+    }
   });
 });
