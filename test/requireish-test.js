@@ -22,7 +22,7 @@ vows.describe('require-analyzer').addBatch({
     "the dir() method": {
       topic: function () {
         var that = this;
-        analyzer.dir(path.join(__dirname, '..', 'lib'), this.callback);
+        analyzer.dir({ target: path.join(__dirname, '..', 'lib') }, this.callback);
       },
       "should respond with the correct dependencies": function (err, pkgs) {
         assert.isNull(err);
@@ -34,7 +34,7 @@ vows.describe('require-analyzer').addBatch({
   "When using require-analyzer": {
     "the package() method": {
       topic: function () {
-        analyzer.package(path.join(__dirname, '..'), this.callback)
+        analyzer.package({ target: path.join(__dirname, '..') }, this.callback)
       },
       "should respond with the correct dependencies": function (err, pkgs) {
         assert.isNull(err);
@@ -46,7 +46,7 @@ vows.describe('require-analyzer').addBatch({
   "When using require-analyzer": {
     "the file() method": {
       topic: function () {
-        analyzer.file(path.join(__dirname, '..', 'lib', 'require-analyzer'), this.callback)
+        analyzer.file({ target: path.join(__dirname, '..', 'lib', 'require-analyzer') }, this.callback)
       },
       "should respond with the correct dependencies": function (err, pkgs) {
         assert.isNull(err);

@@ -158,12 +158,7 @@ fs.readFile(pkgFile, function (err, data) {
   // Formats the results according to the `version` of each package.
   //
   function mergeResults (results) {
-    var all = {};
-
-    Object.keys(results).forEach(function (pkg) {
-      all[pkg] = '>= ' + results[pkg].version;
-    });
-
+    var all = analyzer.extractVersions(results);
     return analyzer.updates(pkg.dependencies, all);
   }
   
