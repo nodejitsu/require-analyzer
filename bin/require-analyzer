@@ -113,8 +113,15 @@ function listDependencies (pkg, msgs) {
   })
 }
 
-var dir = argv._[0] || process.cwd(),
-    pkgFile = path.join(dir, 'package.json');
+var dir = process.cwd(), 
+    source = argv._[0], 
+    pkgFile;
+
+if (source) {
+  dir = source[0] === '/' ? source : path.join(dir, source);
+}
+
+pkgFile = path.join(dir, 'package.json');
 
 winston.info('require-analyzer starting in ' + dir.magenta);
 fs.readFile(pkgFile, function (err, data) {
