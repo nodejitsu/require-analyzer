@@ -44,7 +44,6 @@ Here's a sample of `require-analyzer` analyzing it's own dependencies:
   info:  Retrieved packages from npm
   info:  Additional dependencies found
   data:  {
-  data:    async: '>= 0.1.8',
   data:    findit: '>= 0.0.3',
   data:    npm: '>= 0.3.18'
   data:  }

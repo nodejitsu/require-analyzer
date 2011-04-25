@@ -8,7 +8,6 @@
     "url": "http://github.com/nodejitsu/require-analyzer.git" 
   },
   "dependencies": {
-    "async": ">= 0.1.8",
     "findit": ">= 0.0.3",
     "npm": ">= 0.3.14"
   },
