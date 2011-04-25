@@ -57,8 +57,76 @@ The easiest way to use `require-analyzer` programmatically is through the `.anal
 3. If it is a file, then analyze `require` statements from that individual file.
 
 Lets dive into a quick sample usage:
-``` javascript
+
+```javascript
   var analyzer = require('require-analyzer');
+  
+  var options = {
+    target: 'path/to/your/dependency' // e.g /Users/some-user/your-package
+    reduce: true
+  };
+  
+  var deps = analyzer.analyze(options, function (err, pkgs) {
+    //
+    // Log all packages that were discovered
+    //
+    console.dir(pkgs);
+  });
+  
+  //
+  // The call the `.analyze()` returns an `EventEmitter` which outputs
+  // data at various stages of the analysis operation.
+  //
+  deps.on('dependencies', function (raw) {
+    //
+    // Log the raw list of dependencies (no versions)
+    //
+    console.dir(raw);
+  });
+  
+  deps.on('search', function (pkgs) {
+    //
+    // Log the results from the npm search operation with the current
+    // active version for each dependency
+    //
+    console.dir(pkgs);
+  });
+  
+  deps.on('reduce', function (reduced) {
+    //
+    // Logs the dependencies after they have been cross-referenced with 
+    // sibling dependencies. (i.e. if 'foo' requires 'bar', 'bar' will be removed).
+    //
+    console.dir(reduced);
+  });
+```
+
+### Further analyzing dependencies
+Sometimes when dealing with dependencies it is necessary to further analyze the dependencies that are returned. `require-analyzer` has a convenience method for doing just this:
+
+```javascript
+  var analyzer = require('require-analyzer');
+  
+  var current = {
+    'foo': '>= 0.1.0'
+  };
+  
+  var updated = {
+    'foo': '>= 0.2.0',
+    'bar': '>= 0.1.0'
+  };
+  
+  var updates = analyzer.update(current, updated);
+  
+  //
+  // This will return an object literal with the differential
+  // updates between the two sets of dependencies:
+  //
+  // {
+  //   added: { 'bar': '>= 0.1.0' },
+  //   updated: { 'foo': '>= 0.2.0' }
+  // }
+  //
 ```
 
 ## Tests
