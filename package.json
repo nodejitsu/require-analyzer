@@ -1,18 +1,26 @@
 {
   "name": "require-analyzer",
   "description": "Determine dependencies for a given node.js file, directory tree, or module in code or on the command line",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "author": "Charlie Robbins <charlie.robbins@gmail.com>",
   "repository": {
     "type": "git",
-    "url": "http://github.com/nodejitsu/require-analyzer.git" 
+    "url": "http://github.com/nodejitsu/require-analyzer.git"
   },
   "dependencies": {
-    "findit": ">= 0.0.3",
-    "npm": ">= 0.3.14",
-    "semver": ">= 1.0.4"
+    "colors": "0.x.x",
+    "eyes": "0.1.x",
+    "findit": "0.0.x",
+    "npm": "1.0.x",
+    "optimist": "0.1.x",
+    "semver": "1.0.x",
+    "winston": "0.2.x"
   },
   "main": "./lib/require-analyzer",
-  "bin": { "require-analyzer": "./bin/require-analyzer" },
-  "engines": { "node": ">= 0.4.0" }
+  "bin": {
+    "require-analyzer": "./bin/require-analyzer"
+  },
+  "engines": {
+    "node": ">= 0.4.0"
+  }
 }
