@@ -47,38 +47,7 @@ var inspect = eyes.inspector({ stream: null,
 // Configure winston to pretty print in a similar style
 // to `jitsu`.
 //
-var log = {
-  levels: {
-    silly: 0,
-    input: 1,
-    prompt: 2,
-    info: 3,
-    data: 4,
-    warn: 5,
-    error: 6
-  },
-  colors: {
-    silly: 'magenta',
-    input: 'grey',
-    prompt: 'grey',
-    info: 'green',
-    data: 'grey',
-    warn: 'yellow',
-    error: 'red'
-  }
-};
-
-//
-// Configure winston with the levels and colors that we've defined
-//
-winston.emitErrs = false;
-winston.defaultTransports().console.colorize = true;
-winston.defaultTransports().console.timestamp = false;
-winston.padLevels = true;
-if (!winston.levels.prompt) {
-  winston.setLevels(log.levels);
-  winston.addColors(log.colors);
-}
+winston.cli();
 
 //
 // ### function listDependencies (pkg, msg)
