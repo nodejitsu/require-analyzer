@@ -9,12 +9,16 @@ var Module = require('module').Module,
 // of packages as they are loaded. 
 //
 Module._load = function (name) {
-  console.log(name);
+  console.log('__!load::' + name);
   return __load.apply(Module, arguments);
 }
 
 try {    
   require(process.argv[2]);
+  
+  process.nextTick(function () {
+    process.exit(0);
+  });
 }
 catch (ex) {
   //
