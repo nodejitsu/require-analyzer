@@ -22,6 +22,9 @@ try {
 }
 catch (ex) {
   //
-  // Ignore errors and attempt to log as many packages as we can.
+  // Log errors and attempt to log as many packages as we can.
   //
+  ex.stack.split('\n').forEach(function (line) {
+    console.error('__!err::' + line);
+  });
 }

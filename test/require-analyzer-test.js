@@ -16,6 +16,8 @@ var fs = require('fs'),
 var packages = [
   'npm',
   'semver',
+  'nopt',
+  'abbrev',
   'findit',
   'seq',
   'hashish',
@@ -34,10 +36,7 @@ vows.describe('require-analyzer').addBatch({
         assert.isNull(err);
         assert.deepEqual(pkgs, packages);
       }
-    }
-  }
-}).addBatch({
-  "When using require-analyzer": {
+    },
     "the package() method": {
       topic: function () {
         analyzer.package({ target: path.join(__dirname, '..') }, this.callback)
@@ -46,17 +45,24 @@ vows.describe('require-analyzer').addBatch({
         assert.isNull(err);
         assert.deepEqual(pkgs, packages);
       }
-    }
-  }
-}).addBatch({
-  "When using require-analyzer": {
+    },
     "the file() method": {
-      topic: function () {
-        analyzer.file({ target: path.join(__dirname, '..', 'lib', 'require-analyzer') }, this.callback)
+      "when passed a valid file": {
+        topic: function () {
+          analyzer.file({ target: path.join(__dirname, '..', 'lib', 'require-analyzer') }, this.callback)
+        },
+        "should respond with the correct dependencies": function (err, pkgs) {
+          assert.isNull(err);
+          assert.deepEqual(pkgs, packages);
+        }
       },
-      "should respond with the correct dependencies": function (err, pkgs) {
-        assert.isNull(err);
-        assert.deepEqual(pkgs, packages);
+      "when passed a file with errors": {
+        topic: function () {
+          analyzer.file({ target: path.join(__dirname, 'fixtures', 'throw-error') }, this.callback)
+        },
+        "should respond with an error": function (err, pkgs) {
+          assert.isNotNull(err);
+        }
       }
     }
   }
