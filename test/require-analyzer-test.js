@@ -13,7 +13,7 @@ var fs = require('fs'),
     assert = require('assert'),
     analyzer = require('require-analyzer');
 
-var packages = [
+var rawPackages = [
   'npm',
   'semver',
   'nopt',
@@ -25,8 +25,27 @@ var packages = [
   'chainsaw'
 ];
 
+var packages = [
+  'findit',
+  'npm',
+  'semver'
+];
+
 vows.describe('require-analyzer').addBatch({
   "When using require-analyzer": {
+    "the analyze() method": {
+      "when passed a directory": {
+        "with a valid package.json": {
+          topic: function () {
+            analyzer.analyze({ target: path.join(__dirname, '..') }, this.callback)
+          },
+          "should respond with the correct dependencies": function (err, pkgs) {
+            assert.isNull(err);
+            assert.deepEqual(Object.keys(pkgs), packages);
+          }
+        }
+      }
+    },
     "the dir() method": {
       topic: function () {
         var that = this;
@@ -34,7 +53,7 @@ vows.describe('require-analyzer').addBatch({
       },
       "should respond with the correct dependencies": function (err, pkgs) {
         assert.isNull(err);
-        assert.deepEqual(pkgs, packages);
+        assert.deepEqual(pkgs, rawPackages);
       }
     },
     "the package() method": {
@@ -43,7 +62,7 @@ vows.describe('require-analyzer').addBatch({
       },
       "should respond with the correct dependencies": function (err, pkgs) {
         assert.isNull(err);
-        assert.deepEqual(pkgs, packages);
+        assert.deepEqual(pkgs, rawPackages);
       }
     },
     "the file() method": {
@@ -53,7 +72,7 @@ vows.describe('require-analyzer').addBatch({
         },
         "should respond with the correct dependencies": function (err, pkgs) {
           assert.isNull(err);
-          assert.deepEqual(pkgs, packages);
+          assert.deepEqual(pkgs, rawPackages);
         }
       },
       "when passed a file with errors": {
