@@ -134,8 +134,10 @@ fs.readFile(pkgFile, function (err, data) {
   winston.info('Analyzing dependencies...');
   var emitter = analyzer.analyze(options, function (err, packages) {
     if (err) {
-      winston.error('Error analyzing dependencies');
-      winston.error(err.message.red);
+      winston.error('Error analyzing dependencies'.red);
+      err.message.split('\n').forEach(function (line) {
+        winston.error(line);
+      })
       return;
     }
   });
