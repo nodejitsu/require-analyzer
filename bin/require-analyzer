@@ -19,6 +19,7 @@ var help = [
   '',
   'options:',
   '  --update     Update versions for existing dependencies',
+  '  -f, --file   File to check for instead of package.json.',
   '  -h, --help   You\'re staring at it'
 ].join('\n');
 
@@ -118,10 +119,10 @@ var dir = process.cwd(),
     pkgFile;
 
 if (source) {
-  dir = source[0] === '/' ? source : path.join(dir, source);
+  dir = source[0] === '/' ? source : path.join(argv.d || argv.dir || dir, source);
 }
 
-pkgFile = path.join(dir, 'package.json');
+pkgFile = path.join(dir, argv.f || argv.file || 'package.json');
 
 winston.info('require-analyzer starting in ' + dir.magenta);
 fs.readFile(pkgFile, function (err, data) {
@@ -135,6 +136,9 @@ fs.readFile(pkgFile, function (err, data) {
     target: dir,
     reduce: true
   };
+  if (argv.f || argv.file) {
+     options.f = argv.f || argv.file;
+  }
   
   //
   // Attempt to parse the package.json from the current directory.
