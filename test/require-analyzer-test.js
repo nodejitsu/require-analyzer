@@ -13,9 +13,11 @@ var fs = require('fs'),
     assert = require('assert'),
     analyzer = require('require-analyzer');
 
-var packages = [
+var rawPackages = [
   'npm',
   'semver',
+  'nopt',
+  'abbrev',
   'findit',
   'seq',
   'hashish',
@@ -23,8 +25,27 @@ var packages = [
   'chainsaw'
 ];
 
+var packages = [
+  'findit',
+  'npm',
+  'semver'
+];
+
 vows.describe('require-analyzer').addBatch({
   "When using require-analyzer": {
+    "the analyze() method": {
+      "when passed a directory": {
+        "with a valid package.json": {
+          topic: function () {
+            analyzer.analyze({ target: path.join(__dirname, '..') }, this.callback)
+          },
+          "should respond with the correct dependencies": function (err, pkgs) {
+            assert.isNull(err);
+            assert.deepEqual(Object.keys(pkgs), packages);
+          }
+        }
+      }
+    },
     "the dir() method": {
       topic: function () {
         var that = this;
@@ -32,31 +53,35 @@ vows.describe('require-analyzer').addBatch({
       },
       "should respond with the correct dependencies": function (err, pkgs) {
         assert.isNull(err);
-        assert.deepEqual(pkgs, packages);
+        assert.deepEqual(pkgs, rawPackages);
       }
-    }
-  }
-}).addBatch({
-  "When using require-analyzer": {
+    },
     "the package() method": {
       topic: function () {
         analyzer.package({ target: path.join(__dirname, '..') }, this.callback)
       },
       "should respond with the correct dependencies": function (err, pkgs) {
         assert.isNull(err);
-        assert.deepEqual(pkgs, packages);
+        assert.deepEqual(pkgs, rawPackages);
       }
-    }
-  }
-}).addBatch({
-  "When using require-analyzer": {
+    },
     "the file() method": {
-      topic: function () {
-        analyzer.file({ target: path.join(__dirname, '..', 'lib', 'require-analyzer') }, this.callback)
+      "when passed a valid file": {
+        topic: function () {
+          analyzer.file({ target: path.join(__dirname, '..', 'lib', 'require-analyzer') }, this.callback)
+        },
+        "should respond with the correct dependencies": function (err, pkgs) {
+          assert.isNull(err);
+          assert.deepEqual(pkgs, rawPackages);
+        }
       },
-      "should respond with the correct dependencies": function (err, pkgs) {
-        assert.isNull(err);
-        assert.deepEqual(pkgs, packages);
+      "when passed a file with errors": {
+        topic: function () {
+          analyzer.file({ target: path.join(__dirname, 'fixtures', 'throw-error') }, this.callback)
+        },
+        "should respond with an error": function (err, pkgs) {
+          assert.isNotNull(err);
+        }
       }
     }
   }
