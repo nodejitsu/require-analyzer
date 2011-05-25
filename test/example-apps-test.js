@@ -21,7 +21,7 @@ function dependencies(file) {
       target: path.join(__dirname, file) 
     }, 
     function (err, pkgs) {
-      that.callback(err, analyzer.extractVersions(pkgs))
+      return err ? that.callback(err) : that.callback(null, analyzer.extractVersions(pkgs));
     });
   }
 }
