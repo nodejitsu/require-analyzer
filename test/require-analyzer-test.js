@@ -74,14 +74,6 @@ vows.describe('require-analyzer').addBatch({
           assert.isNull(err);
           assert.deepEqual(pkgs, rawPackages);
         }
-      },
-      "when passed a file with errors": {
-        topic: function () {
-          analyzer.file({ target: path.join(__dirname, 'fixtures', 'throw-error') }, this.callback)
-        },
-        "should respond with an error": function (err, pkgs) {
-          assert.isNotNull(err);
-        }
       }
     }
   }

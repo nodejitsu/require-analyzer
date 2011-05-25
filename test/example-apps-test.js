@@ -14,25 +14,25 @@ var fs = require('fs'),
     assert = require('assert'),
     analyzer = require('require-analyzer');
 
-function dependencies(file){
+function dependencies(file) {
   return function () { 
-    var self = this
+    var that = this;
     analyzer.analyze({ 
-        target: path.join(__dirname, file) 
-      }, 
-      function (err,pkgs){
-        self.callback(err,analyzer.extractVersions(pkgs))
-    })
+      target: path.join(__dirname, file) 
+    }, 
+    function (err, pkgs) {
+      that.callback(err, analyzer.extractVersions(pkgs))
+    });
   }
 }
 
-vows.describe('require-analyzer').addBatch({
+vows.describe('require-analyzer/examples').addBatch({
   "should respond with the correct dependencies":{
     topic: dependencies('./fixtures/example-app1'),
     "in a simple example": function (err, pkgs) {
-      assert.isNull(err);
+      require('eyes').inspect(arguments);
       assert.deepEqual(pkgs, {
-        'example-dep1' : '0.1.x'
+        'vows' : '0.5.x'
       });
     }
   },
@@ -51,12 +51,12 @@ vows.describe('require-analyzer').addBatch({
     "in a less simple example": function (err, pkgs) {
       assert.isNull(err);
       assert.deepEqual(pkgs, {
-        /*
-          since carapace now starts apps telling them they are the main module
-          it should work like that here too.
-                  */
-        'example-dep1' : '0.1.x', //if(!module.parent)
-        'example-dep2' : '6.5.x', //if(require.main === module)
+        //
+        // Since carapace now starts apps telling them they are the main module
+        // it should work like that here too.
+        //
+        'example-dep1' : '0.1.x',  //if(!module.parent)
+        'example-dep2' : '6.5.x'   //if(require.main === module)
         //'example-dep3': '7.5.x', //only load modules defined in the first tick.
       });
     }
@@ -81,8 +81,8 @@ vows.describe('require-analyzer').addBatch({
         'dep3' : '7.5.x', 
       });
     }
-  },
-}).export(module)
+  }
+}).export(module);
 
 /*
   if(module.parent) //load
