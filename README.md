@@ -133,7 +133,7 @@ Sometimes when dealing with dependencies it is necessary to further analyze the 
 
 ## Tests
 <pre>
-  vows --spec
+  npm test
 </pre>
 
 #### Author: [Charlie Robbins][2]

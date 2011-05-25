@@ -18,6 +18,7 @@ var help = [
   'options:',
   '  --update     Update versions for existing dependencies',
   '  -f, --file   File to check for instead of package.json.',
+  '  --safe       display existing dependencies but do change package.json',
   '  -h, --help   You\'re staring at it'
 ].join('\n');
 
@@ -172,6 +173,10 @@ fs.readFile(pkgFile, function (err, data) {
     // If require-analyzer found new dependencies then update the `package.json`
     // file in the target `dir`.
     //
+    if (argv.safe) {
+      winston.info('did not update package.json')
+      return
+    }
     if (Object.keys(newpkg.dependencies).length > 0) {      
       winston.info('Updating ' + pkgFile.magenta);
       pkg.dependencies = analyzer.merge({}, pkg.dependencies, newpkg.dependencies);

@@ -1,10 +1,10 @@
 /*
- * require-analyzer-test.js: Basic tests for the require-analyzer module.
- *
- * (C) 2010, Nodejitsu Inc.
- *
- */
- 
+* require-analyzer-test.js: Basic tests for the require-analyzer module.
+*
+* (C) 2010, Nodejitsu Inc.
+*
+*/
+
 require.paths.unshift(require('path').join(__dirname, '..', 'lib'));
 
 var fs = require('fs'),
@@ -37,7 +37,7 @@ vows.describe('require-analyzer').addBatch({
       "when passed a directory": {
         "with a valid package.json": {
           topic: function () {
-            analyzer.analyze({ target: path.join(__dirname, '..') }, this.callback)
+            analyzer.analyze({target: path.join(__dirname, '..') }, this.callback)
           },
           "should respond with the correct dependencies": function (err, pkgs) {
             assert.isNull(err);
@@ -73,14 +73,6 @@ vows.describe('require-analyzer').addBatch({
         "should respond with the correct dependencies": function (err, pkgs) {
           assert.isNull(err);
           assert.deepEqual(pkgs, rawPackages);
-        }
-      },
-      "when passed a file with errors": {
-        topic: function () {
-          analyzer.file({ target: path.join(__dirname, 'fixtures', 'throw-error') }, this.callback)
-        },
-        "should respond with an error": function (err, pkgs) {
-          assert.isNotNull(err);
         }
       }
     }

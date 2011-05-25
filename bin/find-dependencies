@@ -14,17 +14,22 @@ Module._load = function (name) {
 }
 
 try {    
-  require(process.argv[2]);
-  
+
   process.nextTick(function () {
     process.exit(0);
   });
+  //require(process.argv[2],null,true);
+  Module._load(process.argv[2],null,true)
 }
 catch (ex) {
   //
   // Log errors and attempt to log as many packages as we can.
   //
-  ex.stack.split('\n').forEach(function (line) {
+  var eStr = '' + (ex
+    ? (ex.stack ? ex.stack : ex)
+    : 'falsey error: ' + ex)
+
+  eStr.split('\n').forEach(function (line) {
     console.error('__!err::' + line);
   });
 }
