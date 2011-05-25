@@ -1,7 +1,5 @@
 #!/usr/bin/env node
 
-require.paths.unshift(require('path').join(__dirname, '..', 'lib'));
-
 var fs = require('fs'),
     path = require('path'),
     util = require('util'),
@@ -18,7 +16,9 @@ var help = [
   'is supplied then the current directory is used',
   '',
   'options:',
+  '  -d, --dir    Directory to check for package.json',
   '  --update     Update versions for existing dependencies',
+  '  -f, --file   File to check for instead of package.json.',
   '  --safe       display existing dependencies but do change package.json',
   '  -h, --help   You\'re staring at it'
 ].join('\n');
@@ -83,15 +83,16 @@ function listDependencies (pkg, msgs) {
   })
 }
 
+console.log(argv)
 var dir = process.cwd(), 
     source = argv._[0], 
     pkgFile;
 
 if (source) {
-  dir = source[0] === '/' ? source : path.join(dir, source);
+  dir = source[0] === '/' ? source : path.join(argv.d || argv.dir || dir, source);
 }
 
-pkgFile = path.join(dir, 'package.json');
+pkgFile = path.join(dir, argv.f || argv.file || 'package.json');
 
 winston.info('require-analyzer starting in ' + dir.magenta);
 fs.readFile(pkgFile, function (err, data) {
@@ -105,6 +106,9 @@ fs.readFile(pkgFile, function (err, data) {
     target: dir,
     reduce: true
   };
+  if (argv.f || argv.file) {
+     options.f = argv.f || argv.file;
+  }
   
   //
   // Attempt to parse the package.json from the current directory.
