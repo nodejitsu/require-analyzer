@@ -1,7 +1,7 @@
 {
   "name": "require-analyzer",
   "description": "Determine dependencies for a given node.js file, directory tree, or module in code or on the command line",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "author": "Charlie Robbins <charlie.robbins@gmail.com>",
   "repository": {
     "type": "git",
