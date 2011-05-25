@@ -6,8 +6,5 @@
     "type": "git",
     "url": "git://github.com/dominictarr/require-analyzer.git"
   },
-  "main": "index.js",
-  "engines": {
-    "node": "~v0.4.7"
-  }
+  "main": "index.js"
 }
