@@ -25,7 +25,7 @@
   },
   "scripts": {
     "pretest": "echo installing fixtures...; tar -xf test/fixtures.tar -C test/ ; echo Done.",
-    "test": "vows test/*-test.js",
+    "test": "vows test/*-test.js --spec",
     "posttest": "echo uninstalling fixtures...; rm -rf test/fixtures/ ; echo Done."
  }
 }
