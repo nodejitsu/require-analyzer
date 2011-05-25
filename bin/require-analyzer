@@ -16,6 +16,7 @@ var help = [
   'is supplied then the current directory is used',
   '',
   'options:',
+  '  -d, --dir    Directory to check for package.json',
   '  --update     Update versions for existing dependencies',
   '  -f, --file   File to check for instead of package.json.',
   '  --safe       display existing dependencies but do change package.json',
@@ -82,6 +83,7 @@ function listDependencies (pkg, msgs) {
   })
 }
 
+console.log(argv)
 var dir = process.cwd(), 
     source = argv._[0], 
     pkgFile;
