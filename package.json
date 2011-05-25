@@ -24,6 +24,6 @@
     "node": "0.4.x"
   },
   "scripts": {
-    "test": "vows test/*-test.js --spec",
+    "test": "vows test/*-test.js --spec"
  }
 }
