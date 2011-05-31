@@ -7,7 +7,7 @@ var fs = require('fs'),
     eyes = require('eyes'),
     winston = require('winston'),
     argv = require('optimist').argv,
-    analyzer = require('require-analyzer');
+    analyzer = require('../');
 
 var help = [
   'usage: require-analyzer [options] [directory]',
@@ -83,7 +83,6 @@ function listDependencies (pkg, msgs) {
   })
 }
 
-console.log(argv)
 var dir = process.cwd(), 
     source = argv._[0], 
     pkgFile;
