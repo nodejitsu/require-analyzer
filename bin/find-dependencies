@@ -6,14 +6,15 @@ var Module = require('module').Module,
 
 //
 // Monkey punch `Module._load()` to observe the names
-// of packages as they are loaded. 
+// of packages as they are loaded.
 //
-Module._load = function (name) {
+Module._load = function (name, parent) {
+  name = /^[./]/.test(name) ? Module._resolveFilename(name, parent)[1] : name;
   console.log('__!load::' + name);
   return __load.apply(Module, arguments);
 }
 
-try {    
+try {
 
   process.nextTick(function () {
     process.exit(0);
