@@ -9,20 +9,28 @@
 require.paths.unshift(require('path').join(__dirname, '..', 'lib'));
 
 var fs = require('fs'),
+    exec = require('child_process').exec,
     path = require('path'),
     vows = require('vows'),
     assert = require('assert'),
     analyzer = require('require-analyzer');
 
-function dependencies(file) {
+function dependencies (file, prerunner) {
   return function () { 
     var that = this;
-    analyzer.analyze({ 
-      target: path.join(__dirname, file) 
-    }, 
-    function (err, pkgs) {
-      return err ? that.callback(err) : that.callback(null, analyzer.extractVersions(pkgs));
-    });
+    
+    function runAnalyze () {
+      analyzer.analyze({ 
+        target: path.join(__dirname, file) 
+      }, 
+      function (err, pkgs) {
+        return err ? that.callback(err) : that.callback(null, analyzer.extractVersions(pkgs));
+      });
+    }
+    
+    return prerunner 
+      ? prerunner(runAnalyze) 
+      : runAnalyze();
   }
 }
 
@@ -47,11 +55,23 @@ vows.describe('require-analyzer/examples').addBatch({
     }
   },
   "should respond with the correct dependencies":{
-    topic: dependencies('./fixtures/socket-io-app'),
+    topic: dependencies('./fixtures/socket-io-app/', function (callback) {
+      var rootDir = path.join(__dirname, '..'),
+          modulesDir = path.join(__dirname, 'fixtures', 'socket-io-app', 'node_modules');
+          
+      var commands = [
+        'cd ' + rootDir,
+        'npm install socket.io',
+        'mkdir ' + modulesDir,
+        'mv ' + path.join(rootDir, 'node_modules', 'socket.io') + ' ' + modulesDir
+      ];
+      
+      exec(commands.join(' && '), callback);
+    }),
     "in a less simple example": function (err, pkgs) {
       assert.isNull(err);
       assert.deepEqual(pkgs, {
-        'socket.io' : '*'
+        'socket.io' : '0.6.x'
       });
     }
   },
@@ -92,25 +112,3 @@ vows.describe('require-analyzer/examples').addBatch({
     }
   }
 }).export(module);
-
-/*
-  if(module.parent) //load
-  if(require.main === module) //load
-
-  nextTick //do not load
-
-  conflicting dependencies.
-  x 
-   -> b 
-      -> a 0.2.0
-   -> a 0.1.0
-
-  should report the first level.
-
-  correct versions
-  conflicting dependencies
-  first tick
-  
-  still detects dependencies specified by variables.
-  
-*/
