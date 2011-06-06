@@ -46,6 +46,15 @@ vows.describe('require-analyzer/examples').addBatch({
       });
     }
   },
+  "should respond with the correct dependencies":{
+    topic: dependencies('./fixtures/socket-io-app'),
+    "in a less simple example": function (err, pkgs) {
+      assert.isNull(err);
+      assert.deepEqual(pkgs, {
+        'socket.io' : '*'
+      });
+    }
+  },
   "the main module should know it's the main":{
     topic: dependencies('./fixtures/example-app3'),
     "in a less simple example": function (err, pkgs) {
