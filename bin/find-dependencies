@@ -15,12 +15,11 @@ Module._load = function (name, parent) {
 }
 
 try {
-
   process.nextTick(function () {
     process.exit(0);
   });
-  //require(process.argv[2],null,true);
-  Module._load(process.argv[2],null,true)
+
+  Module._load(process.argv[2], null, true)
 }
 catch (ex) {
   //
