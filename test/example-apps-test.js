@@ -71,7 +71,7 @@ vows.describe('require-analyzer/examples').addBatch({
     "in a less simple example": function (err, pkgs) {
       assert.isNull(err);
       assert.deepEqual(pkgs, {
-        'socket.io' : '0.6.x'
+        'socket.io' : '0.8.x'
       });
     }
   },
@@ -86,7 +86,7 @@ vows.describe('require-analyzer/examples').addBatch({
         //
         'example-dep1' : '0.1.x',  //if(!module.parent)
         'example-dep2' : '6.5.x'   //if(require.main === module)
-        //'example-dep3': '7.5.x', //only load modules defined in the first tick.
+        // 'example-dep3': '7.5.x' //only load modules defined in the first tick.
       });
     }
   },
@@ -102,12 +102,22 @@ vows.describe('require-analyzer/examples').addBatch({
   },
   "does not depend on require specified":{
     topic: dependencies('./fixtures/dynamic-deps'),
-    "in app with conflicts": function (err, pkgs) {
+    "in app with dynamic dependencies": function (err, pkgs) {
       assert.isNull(err);
       assert.deepEqual(pkgs, {
         'dep1' : '0.1.x',
         'dep2' : '6.5.x', 
         'dep3' : '7.5.x', 
+      });
+    }
+  },
+  "with no package.json or node_modules folder present": {
+    topic: dependencies('./fixtures/require-only'),
+    "dependencies are still properly detected": function (err, pkgs) {
+      assert.isNull(err);
+      assert.deepEqual(pkgs, {
+        'colors' : '*',
+        'ncp' : '*'
       });
     }
   }
