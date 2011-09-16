@@ -9,8 +9,8 @@ var Module = require('module').Module,
 // of packages as they are loaded.
 //
 Module._load = function (name, parent) {
-  name = /^[./]/.test(name) ? Module._resolveFilename(name, parent)[1] : name;
   console.log('__!load::' + name);
+  name = /^[./]/.test(name) ? Module._resolveFilename(name, parent)[1] : name;
   return __load.apply(Module, arguments);
 }
 
@@ -19,7 +19,7 @@ try {
     process.exit(0);
   });
 
-  Module._load(process.argv[2], null, true)
+  Module._load(process.argv[2], null, true);
 }
 catch (ex) {
   //
@@ -27,9 +27,20 @@ catch (ex) {
   //
   var eStr = '' + (ex
     ? (ex.stack ? ex.stack : ex)
-    : 'falsey error: ' + ex)
+    : 'falsey error: ' + ex);
 
-  eStr.split('\n').forEach(function (line) {
-    console.error('__!err::' + line);
-  });
+  // 
+  // However, 'cannot find module' errors should be squashed.
+  // In cases with no node_modules present, this is not an indication of failure.
+  // This should perhaps be replaced with a node-detective fallback.
+  // 
+
+  if (/^Error: Cannot find module '(.*)'/.exec(eStr)) {
+    console.log('__!load::' + $1);
+  }
+  else {
+    eStr.split('\n').forEach(function (line) {
+      console.error('__!err::' + line);
+    });
+  }
 }

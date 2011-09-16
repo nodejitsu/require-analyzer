@@ -110,8 +110,18 @@ vows.describe('require-analyzer/examples').addBatch({
       });
     }
   },
-  "with no package.json or node_modules folder present": {
+  "when passed a directory with no package.json or node_modules folder present": {
     topic: dependencies('./fixtures/require-only'),
+    "dependencies are still properly detected": function (err, pkgs) {
+      assert.isNull(err);
+      assert.deepEqual(pkgs, {
+        'colors': '*',
+        'ncp': '*'
+      });
+    }
+  },
+  "when passed a file with no package.json or node_modules folder present": {
+    topic: dependencies('./fixtures/require-only/index.js'),
     "dependencies are still properly detected": function (err, pkgs) {
       assert.isNull(err);
       assert.deepEqual(pkgs, {
