@@ -38,9 +38,8 @@ vows.describe('require-analyzer/examples').addBatch({
   "should respond with the correct dependencies":{
     topic: dependencies('./fixtures/example-app1'),
     "in a simple example": function (err, pkgs) {
-      require('eyes').inspect(arguments);
       assert.deepEqual(pkgs, {
-        'vows': '0.5.x'
+        'example-dep1': '0.1.x'
       });
     }
   },
@@ -84,9 +83,9 @@ vows.describe('require-analyzer/examples').addBatch({
         // Since carapace now starts apps telling them they are the main module
         // it should work like that here too.
         //
-        'example-dep1': '0.1.x',  //if(!module.parent)
-        'example-dep2': '6.5.x'   //if(require.main === module)
-        //'example-dep3': '7.5.x' //only load modules defined in the first tick.
+        'example-dep1': '0.1.x',  // if(!module.parent)
+        'example-dep2': '6.5.x'   // if(require.main === module)
+        //'example-dep3': '7.5.x' // only load modules defined in the first tick.
       });
     }
   },

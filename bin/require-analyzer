@@ -4,7 +4,6 @@ var fs = require('fs'),
     path = require('path'),
     util = require('util'),
     colors = require('colors'),
-    eyes = require('eyes'),
     winston = require('winston'),
     argv = require('optimist').argv,
     analyzer = require('../lib/require-analyzer');
