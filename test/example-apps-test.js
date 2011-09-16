@@ -40,7 +40,7 @@ vows.describe('require-analyzer/examples').addBatch({
     "in a simple example": function (err, pkgs) {
       require('eyes').inspect(arguments);
       assert.deepEqual(pkgs, {
-        'vows' : '0.5.x'
+        'vows': '0.5.x'
       });
     }
   },
@@ -49,8 +49,8 @@ vows.describe('require-analyzer/examples').addBatch({
     "in a less simple example": function (err, pkgs) {
       assert.isNull(err);
       assert.deepEqual(pkgs, {
-        'example-dep1' : '0.1.x',
-        'example-dep2' : '6.5.x'
+        'example-dep1': '0.1.x',
+        'example-dep2': '6.5.x'
       });
     }
   },
@@ -71,7 +71,7 @@ vows.describe('require-analyzer/examples').addBatch({
     "in a less simple example": function (err, pkgs) {
       assert.isNull(err);
       assert.deepEqual(pkgs, {
-        'socket.io' : '0.8.x'
+        'socket.io': '0.8.x'
       });
     }
   },
@@ -84,9 +84,9 @@ vows.describe('require-analyzer/examples').addBatch({
         // Since carapace now starts apps telling them they are the main module
         // it should work like that here too.
         //
-        'example-dep1' : '0.1.x',  //if(!module.parent)
-        'example-dep2' : '6.5.x'   //if(require.main === module)
-        // 'example-dep3': '7.5.x' //only load modules defined in the first tick.
+        'example-dep1': '0.1.x',  //if(!module.parent)
+        'example-dep2': '6.5.x'   //if(require.main === module)
+        //'example-dep3': '7.5.x' //only load modules defined in the first tick.
       });
     }
   },
@@ -95,8 +95,8 @@ vows.describe('require-analyzer/examples').addBatch({
     "in app with conflicts": function (err, pkgs) {
       assert.isNull(err);
       assert.deepEqual(pkgs, {
-        'dep1' : '0.1.x',
-        'dep2-with-conflict-on-dep1' : '6.5.x', 
+        'dep1': '0.1.x',
+        'dep2-with-conflict-on-dep1': '6.5.x', 
       });
     }
   },
@@ -105,9 +105,9 @@ vows.describe('require-analyzer/examples').addBatch({
     "in app with dynamic dependencies": function (err, pkgs) {
       assert.isNull(err);
       assert.deepEqual(pkgs, {
-        'dep1' : '0.1.x',
-        'dep2' : '6.5.x', 
-        'dep3' : '7.5.x', 
+        'dep1': '0.1.x',
+        'dep2': '6.5.x', 
+        'dep3': '7.5.x', 
       });
     }
   },
@@ -116,8 +116,8 @@ vows.describe('require-analyzer/examples').addBatch({
     "dependencies are still properly detected": function (err, pkgs) {
       assert.isNull(err);
       assert.deepEqual(pkgs, {
-        'colors' : '*',
-        'ncp' : '*'
+        'colors': '*',
+        'ncp': '*'
       });
     }
   }

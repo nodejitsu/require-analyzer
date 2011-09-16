@@ -4,7 +4,8 @@ var vows = require('vows'),
     fs   = require('fs'),
     assert = require('assert')
 
-var package1 = JSON.parse(fs.readFileSync(path.join(__dirname, 'fixtures', 'example-app3', 'package.json')));
+var fixturesDir = path.join(__dirname, 'fixtures'),
+    package1 = JSON.parse(fs.readFileSync(path.join(fixturesDir, 'example-app3', 'package.json')));
 
 vows.describe('require-analyzer/cli').addBatch({
   '--safe option prevents changing package.json': {
@@ -13,11 +14,13 @@ vows.describe('require-analyzer/cli').addBatch({
       exec(path.join(__dirname,'..','bin','require-analyzer'), [
         path.join(__dirname,'fixtures','example-app3'),
         '--safe'
-        ], this.callback);
+      ], this.callback);
     },
     'package.json has not changed': function (error, stdout,stderr) {
-      //now, the package.json should not have changed.
-      var package2 = JSON.parse(fs.readFileSync(path.join(__dirname,'fixtures','example-app3','package.json')));
+      //
+      // Now, the package.json should not have changed.
+      //
+      var package2 = JSON.parse(fs.readFileSync(path.join(fixturesDir, 'example-app3', 'package.json')));
       assert.deepEqual(package1,package2);
       assert.equal(package2.dependencies, null);
     }

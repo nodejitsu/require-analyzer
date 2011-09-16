@@ -4,7 +4,7 @@ if(!module.parent)
 if(require.main == module)
   require('example-dep2'); 
 
-process.nextTick(function (){
+process.nextTick(function () {
   //this doesn't get detected. 
   //load your modules syncronously.
   require('example-dep3');
