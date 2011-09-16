@@ -1,2 +1,3 @@
 console.error('dontshowme');
-var doesntexist101 = require('doesntexist101');
+// Requiring this should cause an error to be thrown.
+throw new Error('Flagrant Error.');
