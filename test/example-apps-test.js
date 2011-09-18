@@ -21,7 +21,7 @@ function dependencies (file, prerunner) {
     
     function runAnalyze () {
       analyzer.analyze({ 
-        target: path.join(__dirname, file) 
+        target: path.join(__dirname, file)
       }, 
       function (err, pkgs) {
         return err ? that.callback(err) : that.callback(null, analyzer.extractVersions(pkgs));
@@ -128,6 +128,16 @@ vows.describe('require-analyzer/examples').addBatch({
         'colors': '*',
         'ncp': '*'
       });
+    }
+  },
+  "when the package.json contains npm-supported wildcards that are not valid semver": {
+    topic: dependencies('./fixtures/wildcards'),
+    "dependencies should still be properly detected": function (err, pkgs) {
+      assert.isNull(err);
+      assert.deepEqual(pkgs, {
+        'example-dep1': '*',
+        'example-dep2': '*'
+      })
     }
   }
 }).export(module);

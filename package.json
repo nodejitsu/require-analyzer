@@ -1,7 +1,7 @@
 {
   "name": "require-analyzer",
   "description": "Determine dependencies for a given node.js file, directory tree, or module in code or on the command line",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "author": "Charlie Robbins <charlie.robbins@gmail.com>",
   "repository": {
     "type": "git",
@@ -13,7 +13,9 @@
     "npm": "1.0.x",
     "optimist": "0.2.x",
     "semver": "1.0.x",
-    "winston": "0.5.x"
+    "winston": "0.5.x",
+    "detective": "0.0.x",
+    "eyes": "0.1.x"
   },
   "devDependencies": {
     "vows": "0.5.x"
@@ -27,5 +29,5 @@
   },
   "scripts": {
     "test": "vows test/*-test.js --spec"
- }
+  }
 }
