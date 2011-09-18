@@ -2,6 +2,8 @@
 
 var Module = require('module').Module,
     __load = Module._load,
+    detective = require('detective'),
+    fs = require('fs'),
     packages = {};
 
 //
@@ -26,8 +28,9 @@ catch (ex) {
   // Log errors and attempt to log as many packages as we can.
   //
   var eStr = '' + (ex
-    ? (ex.stack ? ex.stack : ex)
-    : 'falsey error: ' + ex);
+        ? (ex.stack ? ex.stack : ex)
+        : 'falsey error: ' + ex),
+      notFound = /^Error: Cannot find module '(.*)'/.test(eStr);
 
   // 
   // However, 'cannot find module' errors should be squashed.
@@ -35,8 +38,10 @@ catch (ex) {
   // This should perhaps be replaced with a node-detective fallback.
   // 
 
-  if (/^Error: Cannot find module '(.*)'/.exec(eStr)) {
-    console.log('__!load::' + $1);
+  if (notFound) {
+    detective(fs.readFileSync(process.argv[2])).forEach(function (dep) {
+      console.log('__!load::' + dep);
+    });
   }
   else {
     eStr.split('\n').forEach(function (line) {
