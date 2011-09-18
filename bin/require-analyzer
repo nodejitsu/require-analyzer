@@ -6,6 +6,7 @@ var fs = require('fs'),
     colors = require('colors'),
     winston = require('winston'),
     argv = require('optimist').argv,
+    eyes = require('eyes'),
     analyzer = require('../lib/require-analyzer');
 
 var help = [
