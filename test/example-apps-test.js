@@ -6,14 +6,12 @@
  *
  */
 
-require.paths.unshift(require('path').join(__dirname, '..', 'lib'));
-
 var fs = require('fs'),
     exec = require('child_process').exec,
     path = require('path'),
     vows = require('vows'),
     assert = require('assert'),
-    analyzer = require('require-analyzer');
+    analyzer = require('../lib/require-analyzer');
 
 function dependencies (file, prerunner) {
   return function () { 
