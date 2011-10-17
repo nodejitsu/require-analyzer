@@ -34,6 +34,28 @@ var packages = [
   'semver'
 ];
 
+var nativeSubjects = {};
+Object.getOwnPropertyNames(process.binding('natives'))
+      .concat(['net', 'tty', 'dgram', 'child_process', 'dns'])
+      .forEach(function (package) {
+  nativeSubjects[package] = {
+    topic: analyzer.isNative(package),
+    'should respond with true': function (result) {
+      assert.isTrue(result);
+    }
+  };
+});
+
+var nonNativeSubjects = {};
+rawPackages.concat(packages).forEach(function (package) {
+  nonNativeSubjects[package] = {
+    topic: analyzer.isNative(package),
+    'should respond with false': function (result) {
+      assert.isFalse(result);
+    }
+  };
+});
+
 vows.describe('require-analyzer').addBatch({
   "When using require-analyzer": {
     "the analyze() method": {
@@ -78,6 +100,10 @@ vows.describe('require-analyzer').addBatch({
           assert.deepEqual(pkgs, rawPackages);
         }
       }
+    },
+    "the isNative() method": {
+      "when passed native package": nativeSubjects,
+      "when passed non-native package": nonNativeSubjects
     }
   }
 }).export(module);
