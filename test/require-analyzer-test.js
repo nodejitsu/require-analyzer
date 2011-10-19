@@ -11,27 +11,55 @@ var fs = require('fs'),
     assert = require('assert'),
     analyzer = require('../lib/require-analyzer');
 
-var rawPackages = [
-  'npm',
-  'graceful-fs',
-  'ini',
-  'proto-list',
-  'semver',
-  'nopt',
-  'abbrev',
-  'slide',
-  'which',
-  'findit',
-  'seq',
-  'hashish',
-  'traverse',
-  'chainsaw'
-];
+var rawPackages = { 
+  'npm': '1.0.x',
+  'graceful-fs': '*',
+  'nopt': '*',
+  'abbrev': '*',
+  'ini': '*',
+  'proto-list': '*',
+  'semver': '1.0.x',
+  'slide': '*',
+  'which': '*',
+  'findit': '0.0.x',
+  'seq': '*',
+  'hashish': '*',
+  'traverse': '*',
+  'chainsaw': '*',
+  'colors': '0.x.x',
+  'optimist': '0.2.x',
+  'winston': '0.5.x',
+  'detective': '0.0.x',
+  'eyes': '0.1.x'
+ 
+};
 
-var packages = [
-  'findit',
-  'npm',
-  'semver'
+var libDeps = { 
+  'colors': '0.x.x',
+  'findit': '0.0.x',
+  'npm': '1.0.x',
+  'optimist': '0.2.x',
+  'semver': '1.0.x',
+  'winston': '0.5.x',
+  'detective': '0.0.x',
+  'eyes': '0.1.x' 
+};
+
+var libPackages = [
+    'npm',
+    'graceful-fs',
+    'nopt',
+    'abbrev',
+    'ini',
+    'proto-list',
+    'semver',
+    'slide',
+    'which',
+    'findit',
+    'seq',
+    'hashish',
+    'traverse',
+    'chainsaw'
 ];
 
 var nativeSubjects = {};
@@ -47,7 +75,7 @@ Object.getOwnPropertyNames(process.binding('natives'))
 });
 
 var nonNativeSubjects = {};
-rawPackages.concat(packages).forEach(function (package) {
+Object.keys(rawPackages).concat(libPackages).forEach(function (package) {
   nonNativeSubjects[package] = {
     topic: analyzer.isNative(package),
     'should respond with false': function (result) {
@@ -66,7 +94,7 @@ vows.describe('require-analyzer').addBatch({
           },
           "should respond with the correct dependencies": function (err, pkgs) {
             assert.isNull(err);
-            assert.deepEqual(Object.keys(pkgs), packages);
+            assert.deepEqual(pkgs, libDeps);
           }
         }
       }
@@ -78,7 +106,7 @@ vows.describe('require-analyzer').addBatch({
       },
       "should respond with the correct dependencies": function (err, pkgs) {
         assert.isNull(err);
-        assert.deepEqual(pkgs, rawPackages);
+        assert.deepEqual(pkgs, libPackages);
       }
     },
     "the package() method": {
@@ -97,7 +125,7 @@ vows.describe('require-analyzer').addBatch({
         },
         "should respond with the correct dependencies": function (err, pkgs) {
           assert.isNull(err);
-          assert.deepEqual(pkgs, rawPackages);
+          assert.deepEqual(pkgs, libPackages);
         }
       }
     },
