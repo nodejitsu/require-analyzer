@@ -1,0 +1,21 @@
+{
+  "author": "AvianFlu",
+  "name": "version-ranges",
+  "description": "A test fixture for the require-analyzer.",
+  "version": "0.0.1",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/nodejitsu/require-analyzer.git"
+  },
+  "main": "app.js",
+  "engines": {
+    "node": "0.4.12"
+  },
+  "dependencies": {
+    "serveStuff": "==2.4.7",
+    "makeShiny": ">=0.15.0 < 0.17.0",
+    "writeMyCSS": "0.17.x"
+
+  },
+  "devDependencies": {}
+}
