@@ -11,7 +11,7 @@ var fs = require('fs'),
     assert = require('assert'),
     analyzer = require('../lib/require-analyzer');
 
-vows.describe('require-analyzer').addBatch({
+vows.describe('require-analyzer error states').addBatch({
   "When using require-analyzer": {
     "the file() method": {
       "when passed a file with errors": {
