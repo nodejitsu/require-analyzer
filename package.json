@@ -3,6 +3,13 @@
   "description": "Determine dependencies for a given node.js file, directory tree, or module in code or on the command line",
   "version": "0.3.4",
   "author": "Charlie Robbins <charlie.robbins@gmail.com>",
+  "contributors": [
+    { "name": "Marak Squires", "email": "marak@nodejitsu.com" },
+    { "name": "Bradley Meck", "email": "bradley@nodejitsu.com" },
+    { "name": "Dominic Tarr", "email": "dominic@nodejitsu.com" },
+    { "name": "Charlie McConnell", "email": "avianflu@nodejitsu.com" },
+    { "name": "Maciej Malecki", "email": "maciej@nodejitsu.com" }
+  ],
   "repository": {
     "type": "git",
     "url": "http://github.com/nodejitsu/require-analyzer.git"
