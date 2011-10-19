@@ -33,17 +33,17 @@ function dependencies (file, prerunner) {
 }
 
 vows.describe('require-analyzer/examples').addBatch({
-  "should respond with the correct dependencies":{
+  "When passed a simple app with a dependency in node_modules but not package.json":{
     topic: dependencies('./fixtures/example-app1'),
-    "in a simple example": function (err, pkgs) {
+    "the dependency is properly detected.": function (err, pkgs) {
       assert.deepEqual(pkgs, {
         'example-dep1': '0.1.x'
       });
     }
   },
-  "should respond with the correct dependencies":{
+  "When passed an app with all dependencies in node_modules but only some in package.json":{
     topic: dependencies('./fixtures/example-app2'),
-    "in a less simple example": function (err, pkgs) {
+    "dependencies are still properly detected.": function (err, pkgs) {
       assert.isNull(err);
       assert.deepEqual(pkgs, {
         'example-dep1': '0.1.x',
@@ -51,30 +51,28 @@ vows.describe('require-analyzer/examples').addBatch({
       });
     }
   },
-  "should respond with the correct dependencies":{
+  "When passed an app with no package.json and an npm dependency (socket.io)":{
     topic: dependencies('./fixtures/socket-io-app/', function (callback) {
       var rootDir = path.join(__dirname, '..'),
           modulesDir = path.join(__dirname, 'fixtures', 'socket-io-app', 'node_modules');
-          
       var commands = [
-        'cd ' + rootDir,
-        'npm install socket.io',
         'mkdir ' + modulesDir,
-        'mv ' + path.join(rootDir, 'node_modules', 'socket.io') + ' ' + modulesDir
+        'cd ' + modulesDir,
+        'npm install socket.io'
       ];
       
       exec(commands.join(' && '), callback);
     }),
-    "in a less simple example": function (err, pkgs) {
+    "the dependency is properly detected.": function (err, pkgs) {
       assert.isNull(err);
       assert.deepEqual(pkgs, {
         'socket.io': '0.8.x'
       });
     }
   },
-  "the main module should know it's the main":{
+  "When called with a module that needs to know it's the main and has a nextTick require":{
     topic: dependencies('./fixtures/example-app3'),
-    "in a less simple example": function (err, pkgs) {
+    "first-tick dependencies are still properly detected": function (err, pkgs) {
       assert.isNull(err);
       assert.deepEqual(pkgs, {
         //
@@ -82,14 +80,19 @@ vows.describe('require-analyzer/examples').addBatch({
         // it should work like that here too.
         //
         'example-dep1': '0.1.x',  // if(!module.parent)
-        'example-dep2': '6.5.x'   // if(require.main === module)
-        //'example-dep3': '7.5.x' // only load modules defined in the first tick.
+        'example-dep2': '6.5.x',  // if(require.main === module)
+        'example-dep3': '7.5.x',  // present in package.json
+        // 'example-dep4': '*' // only load modules defined in the first tick.
       });
+    },
+    "modules required after the first tick are not detected": function (err, pkgs) {
+      assert.isNull(err);
+      assert.isUndefined(pkgs['example-dep4']);
     }
   },
-  "detect first level dependencies":{
+  "When passed an app with conflicts":{
     topic: dependencies('./fixtures/conflicting-app'),
-    "in app with conflicts": function (err, pkgs) {
+    "first level dependencies should still be detected": function (err, pkgs) {
       assert.isNull(err);
       assert.deepEqual(pkgs, {
         'dep1': '0.1.x',
@@ -97,14 +100,15 @@ vows.describe('require-analyzer/examples').addBatch({
       });
     }
   },
-  "does not depend on require specified":{
+  "When passed an app with dynamic dependencies":{
     topic: dependencies('./fixtures/dynamic-deps'),
-    "in app with dynamic dependencies": function (err, pkgs) {
+    "dependencies will still be detected without require specified": function (err, pkgs) {
       assert.isNull(err);
       assert.deepEqual(pkgs, {
         'dep1': '0.1.x',
         'dep2': '6.5.x', 
-        'dep3': '7.5.x', 
+        'dep3': '7.5.x',
+        'example-dep1': '0.1.x' 
       });
     }
   },
@@ -135,7 +139,40 @@ vows.describe('require-analyzer/examples').addBatch({
       assert.deepEqual(pkgs, {
         'example-dep1': '*',
         'example-dep2': '*'
-      })
+      });
+    }
+  },
+  "When passed an app with explicit dependency versions specified in its package.json": {
+    topic: dependencies('./fixtures/explicit-versions'),
+    "dependencies are still properly detected.": function (err, pkgs) {
+      assert.isNull(err);
+      assert.deepEqual(pkgs, {
+        'serveStuff': '==2.4.7',
+        'makeShiny': '==0.16.2',
+        'writeMyCSS': '0.17.x'
+      });
+    }
+  },
+  "When passed an app that does not have all its requires in the main script": {
+    topic: dependencies('./fixtures/subdeps'),
+    "dependencies are still properly detected.": function (err, pkgs) {
+      assert.isNull(err);
+      assert.deepEqual(pkgs, {
+        'serveStuff': '2.4.x',
+        'makeShiny': '0.16.x',
+        'writeMyCSS': '0.17.x'
+      });
+    }
+  },
+  "When passed an app with version ranges in its package.json": {
+    topic: dependencies('./fixtures/version-ranges'),
+    "the author's version ranges are not replaced with wildcards.": function (err, pkgs) {
+      assert.isNull(err); 
+      assert.deepEqual(pkgs, {
+        'serveStuff': '==2.4.7',
+        'makeShiny': '>=0.15.0 < 0.17.0',
+        'writeMyCSS': '0.17.x'
+      });
     }
   }
 }).export(module);
