@@ -75,7 +75,7 @@ Object.getOwnPropertyNames(process.binding('natives'))
 });
 
 var nonNativeSubjects = {};
-rawPackages.concat(packages).forEach(function (package) {
+Object.keys(rawPackages).concat(libPackages).forEach(function (package) {
   nonNativeSubjects[package] = {
     topic: analyzer.isNative(package),
     'should respond with false': function (result) {
