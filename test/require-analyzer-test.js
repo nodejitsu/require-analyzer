@@ -12,7 +12,7 @@ var fs = require('fs'),
     analyzer = require('../lib/require-analyzer');
 
 var rawPackages = { 
-  'npm': '1.0.x',
+  'npm': '>= 1.0.100 < 1.1.0',
   'graceful-fs': '*',
   'nopt': '*',
   'abbrev': '*',
@@ -37,7 +37,7 @@ var rawPackages = {
 var libDeps = { 
   'colors': '0.x.x',
   'findit': '0.0.x',
-  'npm': '1.0.x',
+  'npm': '>= 1.0.100 < 1.1.0',
   'optimist': '0.2.x',
   'semver': '1.0.x',
   'winston': '0.5.x',
