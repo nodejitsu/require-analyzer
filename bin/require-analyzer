@@ -94,8 +94,6 @@ if (source) {
 pkgFile = path.join(dir, argv.f || argv.file || 'package.json');
 
 winston.info('require-analyzer starting in ' + dir.magenta);
-
-
 fs.readFile(pkgFile, function (err, data) {
   if (err) {
     if (err.errno === 34 && err.code == 'ENOENT') {
