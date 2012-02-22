@@ -94,13 +94,20 @@ if (source) {
 pkgFile = path.join(dir, argv.f || argv.file || 'package.json');
 
 winston.info('require-analyzer starting in ' + dir.magenta);
+
+
 fs.readFile(pkgFile, function (err, data) {
   if (err) {
-    winston.error('Error reading package.json');
-    winston.error(err.message.red);
-    return;
+    if (err.errno === 34 && err.code == 'ENOENT') {
+      data = "{}";
+    }
+    else {
+      winston.error('Error reading package.json');
+      winston.error(err.message.red);
+      return;
+    }
   }
-  
+ 
   var pkg, updated, options = {
     target: dir,
     reduce: true
