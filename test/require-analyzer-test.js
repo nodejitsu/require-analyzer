@@ -64,7 +64,6 @@ var libPackages = [
 
 var nativeSubjects = {};
 Object.getOwnPropertyNames(process.binding('natives'))
-      .concat(['net', 'tty', 'dgram', 'child_process', 'dns'])
       .forEach(function (package) {
   nativeSubjects[package] = {
     topic: analyzer.isNative(package),
