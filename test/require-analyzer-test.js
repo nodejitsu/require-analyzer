@@ -62,6 +62,12 @@ var libPackages = [
     'chainsaw'
 ];
 
+var depsFromFile = [
+  'npm',
+  'semver',
+  'findit'
+];
+
 var nativeSubjects = {};
 Object.getOwnPropertyNames(process.binding('natives'))
       .forEach(function (package) {
@@ -114,7 +120,7 @@ vows.describe('require-analyzer').addBatch({
       },
       "should respond with the correct dependencies": function (err, pkgs) {
         assert.isNull(err);
-        assert.deepEqual(pkgs, rawPackages);
+        assert.deepEqual(pkgs, libDeps);
       }
     },
     "the file() method": {
@@ -124,7 +130,7 @@ vows.describe('require-analyzer').addBatch({
         },
         "should respond with the correct dependencies": function (err, pkgs) {
           assert.isNull(err);
-          assert.deepEqual(pkgs, libPackages);
+          assert.deepEqual(pkgs, depsFromFile);
         }
       }
     },
