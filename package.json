@@ -17,7 +17,7 @@
   "dependencies": {
     "colors": "0.x.x",
     "findit": "0.0.x",
-    "npm": ">= 1.0.100 < 1.1.0",
+    "npm": "1.1.4",
     "optimist": "0.2.x",
     "semver": "1.0.x",
     "winston": "0.5.x",
@@ -25,7 +25,7 @@
     "eyes": "0.1.x"
   },
   "devDependencies": {
-    "vows": "0.5.x"
+    "vows": "0.6.x"
   },
   "main": "./lib/require-analyzer",
   "bin": {
