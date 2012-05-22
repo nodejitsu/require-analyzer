@@ -37,7 +37,7 @@ var rawPackages = {
 var libDeps = { 
   'colors': '0.x.x',
   'findit': '0.0.x',
-  'npm': '>= 1.0.100 < 1.1.0',
+  'npm': '1.1.x',
   'optimist': '0.2.x',
   'semver': '1.0.x',
   'winston': '0.5.x',
@@ -111,7 +111,7 @@ vows.describe('require-analyzer').addBatch({
       },
       "should respond with the correct dependencies": function (err, pkgs) {
         assert.isNull(err);
-        assert.deepEqual(pkgs, libPackages);
+        assert.deepEqual(pkgs, depsFromFile);
       }
     },
     "the package() method": {
@@ -126,9 +126,10 @@ vows.describe('require-analyzer').addBatch({
     "the file() method": {
       "when passed a valid file": {
         topic: function () {
-          analyzer.file({ target: path.join(__dirname, '..', 'lib', 'require-analyzer') }, this.callback)
+          analyzer.file({ target: path.join(__dirname, '..', 'lib', 'require-analyzer.js') }, this.callback)
         },
         "should respond with the correct dependencies": function (err, pkgs) {
+          console.dir(pkgs);
           assert.isNull(err);
           assert.deepEqual(pkgs, depsFromFile);
         }
