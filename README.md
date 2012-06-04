@@ -2,6 +2,9 @@
 
 Determine dependencies for a given node.js file, directory tree, or module in code or on the command line
 
+# Status
+[![Build Status](https://secure.travis-ci.org/nodejitsu/require-analyzer.png)](http://travis-ci.org/nodejitsu/require-analyzer)
+
 ## Installation
 
 ### Installing npm (node package manager)
