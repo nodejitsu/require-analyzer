@@ -58,7 +58,7 @@ vows.describe('require-analyzer/examples').addBatch({
       var commands = [
         'mkdir ' + modulesDir,
         'cd ' + modulesDir,
-        'npm install socket.io'
+        'npm install socket.io@0.9'
       ];
       
       exec(commands.join(' && '), callback);
@@ -66,7 +66,7 @@ vows.describe('require-analyzer/examples').addBatch({
     "the dependency is properly detected.": function (err, pkgs) {
       assert.isNull(err);
       assert.deepEqual(pkgs, {
-        'socket.io': '0.8.x'
+        'socket.io': '0.9.x'
       });
     }
   },
