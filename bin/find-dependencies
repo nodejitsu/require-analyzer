@@ -11,10 +11,12 @@ var Module = require('module').Module,
 // of packages as they are loaded.
 //
 Module._load = function (name, parent) {
-  console.log('__!load::' + name);
-  name = /^[./]/.test(name) ? Module._resolveFilename(name, parent)[1] : name;
+  process.send({type: "load", msg: name});
+  if(name[0] === "." || name[0] === "/"){
+    name = Module._resolveFilename(name, parent)[1];
+  }
   return __load.apply(Module, arguments);
-}
+};
 
 try {
   process.nextTick(function () {
@@ -29,8 +31,7 @@ catch (ex) {
   //
   var eStr = '' + (ex
         ? (ex.stack ? ex.stack : ex)
-        : 'falsey error: ' + ex),
-      notFound = /^Error: Cannot find module '(.*)'/.test(eStr);
+        : 'falsey error: ' + ex);
 
   // 
   // However, 'cannot find module' errors should be squashed.
@@ -38,14 +39,12 @@ catch (ex) {
   // This should perhaps be replaced with a node-detective fallback.
   // 
 
-  if (notFound) {
+  if (("code" in ex && ex.code === "MODULE_NOT_FOUND") || /^Error: Cannot find module '.*'/.test(eStr)) {
     detective(fs.readFileSync(process.argv[2])).forEach(function (dep) {
-      console.log('__!load::' + dep);
+      process.send({type: "load", msg: dep});
     });
   }
   else {
-    eStr.split('\n').forEach(function (line) {
-      console.error('__!err::' + line);
-    });
+    process.send({type: "error", msg: eStr});
   }
 }
