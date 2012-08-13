@@ -37,10 +37,10 @@ var rawPackages = {
 var libDeps = { 
   'colors': '0.x.x',
   'findit': '0.0.x',
-  'npm': '1.1.x',
-  'optimist': '0.2.x',
+  'read-installed': '0.0.x',
+  'optimist': '0.3.x',
   'semver': '1.0.x',
-  'winston': '0.5.x',
+  'winston': '0.6.x',
   'detective': '0.0.x',
   'eyes': '0.1.x' 
 };
@@ -63,7 +63,7 @@ var libPackages = [
 ];
 
 var depsFromFile = [
-  'npm',
+  'read-installed',
   'semver',
   'findit'
 ];

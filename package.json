@@ -14,12 +14,12 @@
   "dependencies": {
     "colors": "0.x.x",
     "findit": "0.0.x",
-    "npm": "1.1.x",
     "optimist": "0.3.x",
     "semver": "1.0.x",
     "winston": "0.6.x",
     "detective": "0.0.x",
-    "eyes": "0.1.x"
+    "eyes": "0.1.x",
+    "read-installed": "0.0.x"
   },
   "devDependencies": {
     "vows": "0.6.x"
@@ -32,6 +32,7 @@
     "node": ">= 0.4.0"
   },
   "scripts": {
+    "postinstall": "rm -rf `find node_modules/read-installed/ -type d -name npmlog`",
     "test": "vows test/*-test.js --spec"
   }
 }
