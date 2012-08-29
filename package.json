@@ -18,6 +18,7 @@
     "semver": "1.0.x",
     "winston": "0.6.x",
     "detective": "0.0.x",
+    "resolve": "0.2.x",
     "eyes": "0.1.x",
     "read-installed": "0.0.x"
   },
