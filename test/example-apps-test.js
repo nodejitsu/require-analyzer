@@ -174,5 +174,15 @@ vows.describe('require-analyzer/examples').addBatch({
         'writeMyCSS': '0.17.x'
       });
     }
+  },
+  "When passed an app with delayed & distributed dependencies": {
+    topic: dependencies('./fixtures/delayed-require'),
+    "all dependencies are found": function (err, pkgs){
+      assert.isNull(err);
+      assert.deepEqual(pkgs, {
+        "socket.io": "*",
+        "some_module": "*"
+      });
+    }
   }
 }).export(module);
