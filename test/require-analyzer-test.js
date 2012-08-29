@@ -38,6 +38,7 @@ var libDeps = {
   'colors': '0.x.x',
   'findit': '0.0.x',
   'read-installed': '0.0.x',
+  'resolve': '0.2.x',
   'optimist': '0.3.x',
   'semver': '1.0.x',
   'winston': '0.6.x',
@@ -64,6 +65,8 @@ var libPackages = [
 
 var depsFromFile = [
   'read-installed',
+  'detective', 
+  'resolve', 
   'semver',
   'findit'
 ];
