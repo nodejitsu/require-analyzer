@@ -141,6 +141,15 @@ vows.describe('require-analyzer').addBatch({
     "the isNative() method": {
       "when passed native package": nativeSubjects,
       "when passed non-native package": nonNativeSubjects
+    },
+    "the extractVersions() method": {
+      "when passed a version with a specified build": function(){
+        var result = analyzer.extractVersions({"a": "0.1.2-3", "b": "2.3.4-five"});
+        assert.deepEqual(result, {
+          "a": ">= 0.1.2-3",
+          "b": ">= 2.3.4-five"
+        });
+      }
     }
   }
 }).export(module);
