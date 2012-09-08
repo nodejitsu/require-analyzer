@@ -17,8 +17,7 @@ function dependencies (file, prerunner) {
   return function () { 
     var that = this;
     
-    function runAnalyze (err) {
-      if(err) return that.callback(err);
+    function runAnalyze () {
       analyzer.analyze({ 
         target: path.join(__dirname, file)
       }, 
