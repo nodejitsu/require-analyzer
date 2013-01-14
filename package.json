@@ -1,7 +1,7 @@
 {
   "name": "require-analyzer",
   "description": "Determine dependencies for a given node.js file, directory tree, or module in code or on the command line",
-  "version": "0.4.1-1",
+  "version": "0.4.1",
   "author": "Nodejitsu Inc. <info@nodejitsu.com>",
   "maintainers": [
     "indexzero <charlie@nodejitsu.com>",
@@ -13,7 +13,6 @@
   },
   "dependencies": {
     "colors": "0.x.x",
-    "findit": "0.0.x",
     "optimist": "0.3.x",
     "semver": "1.0.x",
     "winston": "0.6.x",

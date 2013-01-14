@@ -2,7 +2,6 @@
 
 var fs = require('fs'),
     path = require('path'),
-    util = require('util'),
     colors = require('colors'),
     winston = require('winston'),
     argv = require('optimist').argv,
@@ -24,7 +23,7 @@ var help = [
 ].join('\n');
 
 if (argv.h || argv.help) {
-  return util.puts(help);
+  return console.log(help);
 }
 
 //
@@ -71,16 +70,16 @@ function listDependencies (pkg, msgs) {
     list = list.replace(/\{\s/, '{ \n')
                .replace(/\}/, '\n}')
                .replace('\033[90m', '  \033[90m')
-               .replace(/, /ig, ',\n  ')
+               .replace(/, /ig, ',\n  ');
   }
   else {
     list = list.replace(/\n\s{4}/ig, '\n  ');
   }
   
-  winston.info(msgs.success)
+  winston.info(msgs.success);
   list.split('\n').forEach(function (line) {
     winston.data(line);
-  })
+  });
 }
 
 var dir = process.cwd(), 
@@ -96,7 +95,7 @@ pkgFile = path.join(dir, argv.f || argv.file || 'package.json');
 winston.info('require-analyzer starting in ' + dir.magenta);
 fs.readFile(pkgFile, function (err, data) {
   if (err) {
-    if (err.errno === 34 && err.code == 'ENOENT') {
+    if (err.errno === 34 && err.code === 'ENOENT') {
       data = "{}";
     }
     else {
@@ -146,7 +145,7 @@ fs.readFile(pkgFile, function (err, data) {
       winston.error('Error analyzing dependencies'.red);
       err.message.split('\n').forEach(function (line) {
         winston.error(line);
-      })
+      });
       return;
     }
   });
@@ -180,8 +179,8 @@ fs.readFile(pkgFile, function (err, data) {
     // file in the target `dir`.
     //
     if (argv.safe) {
-      winston.info('did not update package.json')
-      return
+      winston.info('did not update package.json');
+      return;
     }
     if (Object.keys(newpkg.dependencies).length > 0) {      
       winston.info('Updating ' + pkgFile.magenta);
@@ -194,7 +193,7 @@ fs.readFile(pkgFile, function (err, data) {
         }
         
         winston.info('require-analyzer updated package.json dependencies');
-      })
+      });
     }
   });
 });
