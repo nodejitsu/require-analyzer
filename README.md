@@ -24,7 +24,7 @@ There are two distinct ways to use the `require-analyzer` library: from the comm
 For more information read our blog post at [blog.nodejitsu.com][1].
 
 ### Command-line usage
-Using require-analyzer from the command line is easy. The binary will attempt to read the `package.json` file in the current directory, then analyze the dependencies and cross reference the result. 
+Using require-analyzer from the command line is easy. The binary will attempt to read the `package.json` file in the current directory, then analyze the dependencies and cross reference the result.
 <pre>
   $ require-analyzer --help
   usage: require-analyzer [options] [directory]
@@ -37,7 +37,7 @@ Using require-analyzer from the command line is easy. The binary will attempt to
     -h, --help   You're staring at it
 </pre>
 
-Here's a sample of `require-analyzer` analyzing it's own dependencies:
+Here's a sample of `require-analyzer` analyzing its own dependencies:
 <pre>
   $ require-analyzer
   info:  require-analyzer starting in /Users/Charlie/Nodejitsu/require-analyzer
@@ -58,26 +58,26 @@ Here's a sample of `require-analyzer` analyzing it's own dependencies:
 The easiest way to use `require-analyzer` programmatically is through the `.analyze()` method. This method will use `fs.stat()` on the path supplied and attempt one of three options:
 
 1. If it is a directory that has a package.json, analyze `require` statements from `package.main`
-2. If it is a directory with no package.json analyze every `.js` or `.coffee` file in the directory tree 
+2. If it is a directory with no package.json analyze every `.js` or `.coffee` file in the directory tree
 3. If it is a file, then analyze `require` statements from that individual file.
 
 Lets dive into a quick sample usage:
 
 ```javascript
   var analyzer = require('require-analyzer');
-  
+
   var options = {
     target: 'path/to/your/dependency' // e.g /Users/some-user/your-package
     reduce: true
   };
-  
+
   var deps = analyzer.analyze(options, function (err, pkgs) {
     //
     // Log all packages that were discovered
     //
     console.dir(pkgs);
   });
-  
+
   //
   // The call the `.analyze()` returns an `EventEmitter` which outputs
   // data at various stages of the analysis operation.
@@ -88,7 +88,7 @@ Lets dive into a quick sample usage:
     //
     console.dir(raw);
   });
-  
+
   deps.on('search', function (pkgs) {
     //
     // Log the results from the npm search operation with the current
@@ -96,10 +96,10 @@ Lets dive into a quick sample usage:
     //
     console.dir(pkgs);
   });
-  
+
   deps.on('reduce', function (reduced) {
     //
-    // Logs the dependencies after they have been cross-referenced with 
+    // Logs the dependencies after they have been cross-referenced with
     // sibling dependencies. (i.e. if 'foo' requires 'bar', 'bar' will be removed).
     //
     console.dir(reduced);
@@ -111,18 +111,18 @@ Sometimes when dealing with dependencies it is necessary to further analyze the 
 
 ```javascript
   var analyzer = require('require-analyzer');
-  
+
   var current = {
     'foo': '>= 0.1.0'
   };
-  
+
   var updated = {
     'foo': '>= 0.2.0',
     'bar': '>= 0.1.0'
   };
-  
+
   var updates = analyzer.updates(current, updated);
-  
+
   //
   // This will return an object literal with the differential
   // updates between the two sets of dependencies:
