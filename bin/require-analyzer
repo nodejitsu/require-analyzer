@@ -18,7 +18,7 @@ var help = [
   '  -d, --dir    Directory to check for package.json',
   '  --update     Update versions for existing dependencies',
   '  -f, --file   File to check for instead of package.json.',
-  '  --safe       display existing dependencies but do change package.json',
+  '  --safe       display existing dependencies but do not change package.json',
   '  -h, --help   You\'re staring at it'
 ].join('\n');
 
